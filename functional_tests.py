@@ -12,6 +12,12 @@ class newVisitorTest(unittest.TestCase):
   def tearDown(self):
     self.browser.quit()
 
+  def check_text_in_list_table(self, text):
+    table = self.browser.find_element(By.ID, 'id_list_table')
+    rows = table.find_elements(By.TAG_NAME, 'tr')
+    items = [row.text for row in rows]
+    self.assertIn(text, items) 
+
   def test_can_start_a_todo_list(self):
     # Edith has heard of a cool new online to-do app.
     # She goes to check out its homepage
@@ -37,12 +43,7 @@ class newVisitorTest(unittest.TestCase):
     inputbox.send_keys(Keys.ENTER)
     time.sleep(1)
 
-    table = self.browser.find_element(By.ID, 'id_list_table')
-    rows = table.find_elements(By.TAG_NAME, 'tr')
-    self.assertIn(
-      '1: Buy peacock feathers',
-      [row.text for row in rows]
-    )
+    self.check_text_in_list_table('1: Buy peacock feathers')
 
     # There is still a text box inviting her to add another item
     # She enters "Use peacock feathers to make a fly"
@@ -52,11 +53,8 @@ class newVisitorTest(unittest.TestCase):
     time.sleep(1)
 
     # The page updates again, an now shows both items on her list
-    table = self.browser.find_element(By.ID, 'id_list_table')
-    rows = table.find_elements(By.TAG_NAME, 'tr')
-    items = [row.text for row in rows]
-    self.assertIn('1: Buy peacock feathers', items)
-    self.assertIn('2: Use peacock feathers to make a fly',items)
+    self.check_text_in_list_table('1: Buy peacock feathers')
+    self.check_text_in_list_table('2: Use peacock feathers to make a fly')
 
     # Satisfied, she goes back to sleep
 
