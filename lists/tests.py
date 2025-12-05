@@ -1,5 +1,6 @@
 from django.test import TestCase
 from lists.models import Item
+import unittest
 
 class HomePageTest(TestCase):
 
@@ -15,8 +16,27 @@ class HomePageTest(TestCase):
   def test_can_save_a_POST_request(self):
     text = 'A new list item'
     response = self.client.post('/', data={'item_text': text})
-    self.assertContains(response, text)
-    self.assertTemplateUsed(response, 'home.html')
+    new_item = Item.objects.first()
+
+    self.assertEqual(Item.objects.count(), 1)
+    self.assertEqual(new_item.text, text)
+
+  def test_redirects_after_POST(self):
+    response = self.client.post('/', data={'item_text': ''})
+    self.assertRedirects(response, '/')
+
+  def test_only_saves_items_when_necessary(self):
+    self.client.get('/')
+    self.assertEqual(Item.objects.count(), 0)
+
+  def test_display_all_list_items(self):
+    Item.objects.create(text='Item 1')
+    Item.objects.create(text='Item 2')
+
+    response = self.client.get('/')
+    
+    self.assertContains(response, 'Item 1')
+    self.assertContains(response, 'Item 2')
 
 class ItemModelTest(TestCase):
 
