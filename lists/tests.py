@@ -1,5 +1,6 @@
 from django.test import TestCase
 from lists.models import Item, List
+import lxml.html
 
 class ListAndItemModelTest(TestCase):
 
@@ -39,16 +40,18 @@ class HomePageTest(TestCase):
 
   def test_renders_input_form(self):
     response = self.client.get('/')
-    self.assertContains(
-      response, 
-      '<form method="POST" action="/lists/new">'
+    parsed = lxml.html.fromstring(response.content)
+
+    forms = parsed.cssselect('form[method=POST]')
+    self.assertEqual(len(forms), 1)
+    form = forms[0]
+    self.assertEqual(form.get('action'), '/lists/new')
+
+    self.assertIn(
+      'item_text', 
+      [input.get('name') for input in form.cssselect('input')]
     )
-    self.assertContains(response, '<input name="item_text"')
-
-
-
-
-
+ 
 
 class ListViewTest(TestCase):
 
@@ -60,11 +63,17 @@ class ListViewTest(TestCase):
   def test_renders_input_form(self):
     mylist = List.objects.create()
     response = self.client.get(f'/lists/{mylist.id}/')
-    self.assertContains(
-      response, 
-      f'<form method="POST" action="/lists/{mylist.id}/add_item">'
+    parsed = lxml.html.fromstring(response.content)
+
+    forms = parsed.cssselect('form[method=POST]')
+    self.assertEqual(len(forms), 1)
+    form = forms[0]
+    self.assertEqual(form.get('action'), f'/lists/{mylist.id}/add_item')
+
+    self.assertIn(
+      'item_text', 
+      [input.get('name') for input in form.cssselect('input')]
     )
-    self.assertContains(response, '<input name="item_text"')
 
   def test_display_only_items_for_that_list(self):
     correct_list = List.objects.create()
