@@ -4,12 +4,21 @@ from lists.models import Item, List
 def home_page(request):
   return render(request, 'home.html')
 
-def new_list(request):
-  newlist = List.objects.create()
-  Item.objects.create(text=request.POST['item_text'], list=newlist)
-  return redirect('/lists/single/')
+def view_list(request, list_id):
+  current_list = List.objects.get(id=list_id)
+  return render(request, 'list.html', {'list': current_list})
 
-def view_list(request):
-  items = Item.objects.all()
-  return render(request, 'list.html', {'items': items})
-  return render(request, 'home.html')
+def new_list(request):
+  new_list = List.objects.create()
+  Item.objects.create(text=request.POST['item_text'], list=new_list)
+  return redirect(f'/lists/{new_list.id}/')
+
+def add_item(request, list_id):
+  current_list = List.objects.get(id=list_id)
+  Item.objects.create(
+    text=request.POST['item_text'], 
+    list=current_list
+  )
+  return redirect(f'/lists/{current_list.id}/')
+  
+
