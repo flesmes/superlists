@@ -63,8 +63,8 @@ class NewVisitorTest(LiveServerTestCase):
     inputbox.send_keys(Keys.ENTER)
 
     # The page updates again, an now shows both items on her list
-    self.wait_for_row('1: Buy peacock feathers')
     self.wait_for_row('2: Use peacock feathers to make a fly')
+    self.wait_for_row('1: Buy peacock feathers')
 
     # Satisfied, she goes back to sleep
 
