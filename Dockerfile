@@ -14,4 +14,7 @@ RUN python manage.py collectstatic --noinput
 
 ENV DJANGO_DEBUG_FALSE=Yes
 
+RUN adduser --uid 1234 user
+USER user
+
 CMD ["gunicorn", "--bind", ":8888", "superlists.wsgi:application"]
