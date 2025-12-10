@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.12-slim
 
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
@@ -10,7 +10,7 @@ COPY src /src
 
 WORKDIR /src
 
-RUN python manage.py collectstatic
+RUN python manage.py collectstatic --noinput
 
 ENV DJANGO_DEBUG_FALSE=Yes
 

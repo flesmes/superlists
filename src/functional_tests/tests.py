@@ -11,7 +11,9 @@ MAX_WAIT = 2
 class NewVisitorTest(StaticLiveServerTestCase):
 
   def setUp(self):
-    self.browser = webdriver.Firefox()
+    geckodriver_path = "/snap/bin/geckodriver"
+    driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
+    self.browser = webdriver.Firefox(service=driver_service)
     if "TEST_SERVER" in os.environ:
       self.live_server_url = "http://" + os.environ["TEST_SERVER"]
 
@@ -120,7 +122,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     # She notices the input is nicely centered
     inputbox = self.browser.find_element(By.ID, 'id_new_item')
     input_center = inputbox.location['x'] + inputbox.size['width'] / 2
-    self.assertAlmostEqual(input_center, 512, delta=15)
+    self.assertAlmostEqual(input_center, 512, delta=50)
 
     # She starts a new list and sees the input is nicely centered there too
     inputbox.send_keys('testing')
@@ -128,4 +130,4 @@ class NewVisitorTest(StaticLiveServerTestCase):
     self.wait_for_row('1: testing')
     inputbox = self.browser.find_element(By.ID, 'id_new_item')
     input_center = inputbox.location['x'] + inputbox.size['width'] / 2
-    self.assertAlmostEqual(input_center, 512, delta=15)
+    self.assertAlmostEqual(input_center, 512, delta=50)

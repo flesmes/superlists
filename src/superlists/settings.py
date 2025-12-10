@@ -22,10 +22,12 @@ if "DJANGO_DEBUG_FALSE" in os.environ:
   DEBUG = False
   SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
   ALLOWED_HOSTS = [os.environ["DJANGO_ALLOWED_HOST"]]
+  # db_path = os.environ['DJANGO_DB_PATH']
 else:
   DEBUG = True
   SECRET_KEY = 'django-insecure-de)2keo$q$zw++da(p36v_isc!j=j1^4z!dx!o-l$ht=(q5n!o'
   ALLOWED_HOSTS = []
+  # db_path = BASE_DIR / 'db.sqlite3'
 
 
 # Application definition
@@ -78,6 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': db_path,
     }
 }
 
