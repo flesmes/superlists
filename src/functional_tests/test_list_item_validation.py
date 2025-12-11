@@ -25,8 +25,6 @@ class ItemValidationTest(FunctionalTest):
     self.browser.find_element(By.ID, 'id_new_item').send_keys(Keys.ENTER)
     self.wait_for_row('1: Purchase milk')
 
-    return # TODO re-enable the rest of this test.
-
     # Perversely, she now decides to submit a second blank list item.
     self.browser.find_element(By.ID, 'id_new_item').send_keys(Keys.ENTER)
 
@@ -42,6 +40,3 @@ class ItemValidationTest(FunctionalTest):
     self.browser.find_element(By.ID, 'id_new_item').send_keys('Make tea')
     self.browser.find_element(By.ID, 'id_new_item').send_keys(Keys.ENTER)
     self.wait_for_row('2: Make tea')
-
-    
-    self.fail('write me!')
