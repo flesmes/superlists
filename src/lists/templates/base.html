@@ -21,20 +21,10 @@
             method="POST" 
             action="{% block form_action %}{% endblock %}"
           >
-            {% if form  %}
-              {{ form.text }}
-            {% else %}
-              <input 
-                name="item_text"
-                id="id_new_item" 
-                placeholder="Enter a to-do item"
-                class="form-control form-control-lg 
-                       {% if error %}is-invalid{% endif %}"
-              />
-            {% endif %}
-            {% csrf_token %}
-            {% if error %}
-              <div class="invalid-feedback">{{ error }}</div>
+          {{ form.text }}
+          {% csrf_token %}
+          {% if form.errors %}
+              <div class="invalid-feedback">{{ form.errors.text }}</div>
             {% endif %}
           </form>
         </div>
