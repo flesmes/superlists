@@ -106,6 +106,13 @@ class ListViewTest(TestCase):
     response = self.post_empty_item()
     self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
 
+  def test_for_empty_item_sets_is_invalid_class(self):
+    response = self.post_empty_item()
+    parsed = lxml.html.fromstring(response.content)
+    inputs = parsed.cssselect('input[name=text]')
+    self.assertEqual(len(inputs), 1)
+    self.assertIn('is-invalid', set(inputs[0].classes))
+
   def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
     list1 = List.objects.create()
     Item.objects.create(list=list1, text='textey')
