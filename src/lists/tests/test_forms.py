@@ -27,6 +27,12 @@ class ItemFormTest(TestCase):
       [EMPTY_ITEM_ERROR]
     )
 
+  def test_invalid_form_has_bootstrap_is_invalid_css_class(self):
+    form = ItemForm(data={'test': ''})
+    self.assertFalse(form.is_valid())
+    field = form.fields['text']
+    self.assertIn('is-invalid', field.widget.attrs['class'])
+
   def test_form_save_handles_saving_to_a_list(self):
     current_list = List.objects.create()
     form = ItemForm(data={'text': 'do me'})
@@ -55,3 +61,10 @@ class ExistingListItemFormTest(TestCase):
     form = ExistingListItemForm(for_list=list1, data={'text': 'no twins'})
     self.assertFalse(form.is_valid())
     self.assertEqual(form.errors['text'], [DUPLICATE_ITEM_ERROR])
+
+  def test_form_save(self):
+    current_list = List.objects.create()
+    form = ExistingListItemForm(for_list=current_list, data={'text': 'hi'})
+    self.assertTrue(form.is_valid())
+    new_item = form.save()
+    self.assertEqual(new_item, Item.objects.get())

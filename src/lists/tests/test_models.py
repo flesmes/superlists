@@ -50,6 +50,10 @@ class ItemModelTest(TestCase):
 
 
 class ListModelTest(TestCase):
+
+  def test_string_representation(self):
+    item = Item(text='some_text')
+    self.assertEqual(str(item), 'some_text')
   
   def test_get_absolute_url(self):
     current_list = List.objects.create()
@@ -57,5 +61,13 @@ class ListModelTest(TestCase):
       current_list.get_absolute_url(), 
       f'/lists/{current_list.id}/'
     )
+
+  def test_list_items_order(self):
+    list1 = List.objects.create()
+    item1 = Item.objects.create(list=list1, text='i1')
+    item2 = Item.objects.create(list=list1, text='item')
+    item3 = Item.objects.create(list=list1, text='3')
+    self.assertEqual(list(list1.item_set.all()), [item1, item2, item3])
+
 
 
