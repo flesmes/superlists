@@ -7,7 +7,7 @@ from lists.forms import DUPLICATE_ITEM_ERROR
 class ItemValidationTest(FunctionalTest):
 
   def get_error_element(self):
-    return self.browser.find_element(By.CSS_SELECTOR, '.invalid_feedback')
+    return self.browser.find_element(By.CSS_SELECTOR, '.invalid-feedback')
 
   def test_cannot_add_empty_list_items(self):
     # Edith goes to the home page and accidentally tries to submit
@@ -17,13 +17,13 @@ class ItemValidationTest(FunctionalTest):
 
     # The browser intercepts the request, and does not load the list page.
     self.wait_for(
-      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id_text:invalid')
+      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id-text:invalid')
     )
  
     # She starts typing some text for the new item and the error disappears.
     self.get_item_input_box().send_keys('Purchase milk')
     self.wait_for(
-      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id_text:valid')
+      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id-text:valid')
     )
  
     # And she can submit it successfully
@@ -36,13 +36,13 @@ class ItemValidationTest(FunctionalTest):
     # Again the browser will not comply.
     self.wait_for_row('1: Purchase milk')
     self.wait_for(
-      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id_text:invalid')
+      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id-text:invalid')
     )
  
     # And she can make it happy by filling some text in.
     self.get_item_input_box().send_keys('Make tea')
     self.wait_for(
-      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id_text:valid')
+      lambda: self.browser.find_element(By.CSS_SELECTOR, '#id-text:valid')
     )    
     self.get_item_input_box().send_keys(Keys.ENTER)
     self.wait_for_row('2: Make tea')

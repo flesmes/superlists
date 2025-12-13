@@ -23,7 +23,7 @@
           >
             {% csrf_token %}
             <input
-              id="id_text"
+              id="id-text"
               name="text"
               class="form-control form-control-lg
                      {% if form.errors %}is-invalid{% endif %}"
@@ -49,6 +49,12 @@
       </div>
 
     </div>  
+
+    <script src="/static/lists.js"></script>
+    <script>
+      initialize('#id-text', '.invalid-feedback')
+    </script>
+
   </body>
   
 </html>
