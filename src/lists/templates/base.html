@@ -52,7 +52,9 @@
 
     <script src="/static/lists.js"></script>
     <script>
-      initialize('#id-text', '.invalid-feedback')
+      window.onload = () => {
+        initialize('#id-text')
+      }
     </script>
 
   </body>
