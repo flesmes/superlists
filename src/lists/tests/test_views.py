@@ -16,10 +16,12 @@ class HomePageTest(TestCase):
     response = self.client.get('/')
     parsed = lxml.html.fromstring(response.content)
 
-    forms = parsed.cssselect('form[method=POST]')
-    self.assertEqual(len(forms), 1)
-    form = forms[0]
-    self.assertEqual(form.get('action'), '/lists/new')
+    new_list_forms = [form 
+      for form in parsed.cssselect('form[method=POST]') 
+      if form.get('action') == '/lists/new'
+    ]
+    self.assertEqual(len(new_list_forms), 1)
+    form = new_list_forms[0]
 
     self.assertIn(
       'text', 
@@ -40,13 +42,16 @@ class ListViewTest(TestCase):
 
   def test_renders_input_form(self):
     mylist = List.objects.create()
-    response = self.client.get(f'/lists/{mylist.id}/')
+    url = f'/lists/{mylist.id}/'
+    response = self.client.get(url)
     parsed = lxml.html.fromstring(response.content)
 
-    forms = parsed.cssselect('form[method=POST]')
-    self.assertEqual(len(forms), 1)
-    form = forms[0]
-    self.assertEqual(form.get('action'), f'/lists/{mylist.id}/')
+    new_item_forms = [form 
+      for form in parsed.cssselect('form[method=POST]') 
+      if form.get('action') == url
+    ]
+    self.assertEqual(len(new_item_forms), 1)
+    form = new_item_forms[0]
 
     self.assertIn(
       'text', 
