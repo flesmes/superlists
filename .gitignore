@@ -5,3 +5,4 @@ __pycache__
 static
 src/db.sqlite3
 container.db.sqlite3
+key*
