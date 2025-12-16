@@ -18,7 +18,7 @@
             <span class="navbar-text">
               Logged in as {{ user.email }}
             </span>
-            <form method="POST" action="TODO">
+            <form method="POST" action="{% url 'logout' %}">
               {% csrf_token %}
               <button 
                 id="id-logout" 

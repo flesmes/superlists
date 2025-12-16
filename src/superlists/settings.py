@@ -146,15 +146,11 @@ AUTHENTICATION_BACKENDS = [
   'accounts.authentication.PasswordlessAuthenticationBackend'
 ]
 
-for k in os.environ:
-  if k.startswith('E'):
-    print(k, os.environ[k])
+# Email
 
 EMAIL_HOST = 'live.smtp.mailtrap.io'
 EMAIL_HOST_USER = 'api'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-# from keys import EMAIL_HOST_PASSWORD 
 
