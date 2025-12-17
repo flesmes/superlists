@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import os
+import os, sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,16 +128,34 @@ STATIC_ROOT = BASE_DIR / "static"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Logging
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
-        "console": {"class": "logging.StreamHandler"},
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        "null": {
+            "class": "logging.NullHandler",
+        },
     },
     "loggers": {
-        "root": {"handlers": ["console"], "level": "INFO"},
+        "root": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
     },
 }
+
+# 👇 Solo durante tests
+if "test" in sys.argv:
+    LOGGING["loggers"]["django.request"] = {
+        "handlers": ["null"],
+        "level": "WARNING",
+        "propagate": False,
+    }
 
 # Auth
 
