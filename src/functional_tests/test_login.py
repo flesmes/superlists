@@ -29,6 +29,10 @@ class LoginTest(FunctionalTest):
       )
     )
 
+    # Testing real email sending from the server is not worth it.
+    if self.test_server:
+      return
+
     # She checks her email and finds a message
     email = mail.outbox.pop()
     self.assertIn(TEST_EMAIL, email.to)

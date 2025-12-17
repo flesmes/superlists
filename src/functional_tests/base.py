@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
+from .container_commands import reset_database
+
 MAX_WAIT = 2
 
 def wait(fn):
@@ -28,8 +30,10 @@ class FunctionalTest(StaticLiveServerTestCase):
     geckodriver_path = "/snap/bin/geckodriver"
     driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
     self.browser = webdriver.Firefox(service=driver_service)
-    if "TEST_SERVER" in os.environ:
-      self.live_server_url = "http://" + os.environ["TEST_SERVER"]
+    self.test_server = os.environ.get('TEST_SERVER')
+    if self.test_server:
+      self.live_server_url = "http://" + self.test_server
+      reset_database(self.test_server)
 
   def tearDown(self):
     self.browser.quit()

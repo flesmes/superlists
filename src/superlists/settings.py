@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'functional_tests',
     'lists',
 ]
 
@@ -168,7 +169,7 @@ AUTHENTICATION_BACKENDS = [
 
 EMAIL_HOST = 'live.smtp.mailtrap.io'
 EMAIL_HOST_USER = 'api'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
