@@ -42,7 +42,7 @@ class MyListTest(FunctionalTest):
     self.wait_for(
       lambda: self.assertIn(
         'edith@example.com',
-        self.browser.find_element(By.CSS_SELECTOR, 'h1').text
+        self.browser.find_element(By.CSS_SELECTOR, 'h2').text
       )
     )
 
@@ -51,7 +51,7 @@ class MyListTest(FunctionalTest):
     self.wait_for(
       lambda: self.browser.find_element(By.LINK_TEXT, 'Reticulate splines')
     )
-    self.browser.fin_element(By.LINK_TEXT, 'Reticulate splines').click()
+    self.browser.find_element(By.LINK_TEXT, 'Reticulate splines').click()
     self.wait_for(
       lambda: self.assertEqual(self.browser.current_url, first_list_url)
     )
@@ -59,14 +59,14 @@ class MyListTest(FunctionalTest):
     # She decides to start another list
     self.browser.get(self.live_server_url)
     self.add_list_item('Click cows')
-    second_list_url = self.broser.current_url
+    second_list_url = self.browser.current_url
 
     # Under "my lists", her new list appears
     self.browser.find_element(By.LINK_TEXT, 'My lists').click()
     self.wait_for(
-      lambda: self.growser.fin_element(By.LINK_TEXT, 'Click cows')
+      lambda: self.browser.find_element(By.LINK_TEXT, 'Click cows')
     )
-    self.browser.fin_element(By.LINK_TEXT, 'Click cows').click()
+    self.browser.find_element(By.LINK_TEXT, 'Click cows').click()
     self.wait_for(
       lambda: self.assertEqual(self.browser.current_url, second_list_url)
     )
