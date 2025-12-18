@@ -31,8 +31,8 @@ class MyListTest(FunctionalTest):
 
     # She goes to the home page and starts a list
     self.browser.get(self.live_server_url)
-    self.browser.add_list_item('Reticulate splines')
-    self.browser.add_list_item('Immanentize eschaton')
+    self.add_list_item('Reticulate splines')
+    self.add_list_item('Immanentize eschaton')
     first_list_url = self.browser.current_url
 
     # She notices a "My lists" link and clicks it
