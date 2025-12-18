@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
+from accounts.models import User
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import Item, List
 
@@ -8,7 +9,8 @@ def home_page(request):
   return render(request, 'home.html', {'form': ItemForm()})
 
 def my_lists(request, email):
-  return render(request, 'my_lists.html')
+  owner = User.objects.get(email=email)
+  return render(request, 'my_lists.html', {'owner': owner})
 
 def view_list(request, list_id):
   current_list = List.objects.get(id=list_id)
@@ -26,6 +28,8 @@ def new_list(request):
   form = ItemForm(data=request.POST)
   if form.is_valid():
     new_list = List.objects.create()
+    new_list.owner = request.user
+    new_list.save()
     form.save(for_list=new_list)
     return redirect(new_list)
   else:

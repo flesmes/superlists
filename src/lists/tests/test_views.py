@@ -4,6 +4,7 @@ from django.utils import html
 import lxml.html
 from unittest import skip
 
+from accounts.models import User
 from lists.forms import DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR
 from lists.models import Item, List
 
@@ -28,6 +29,19 @@ class HomePageTest(TestCase):
       'text', 
       [input.get('name') for input in form.cssselect('input')]
     )
+
+class MyListTest(TestCase):
+
+  def test_my_lists_url_renders_my_lists_template(self):
+    User.objects.create(email='a@b.com')
+    response = self.client.get(reverse('my_lists', args=('a@b.com',)))
+    self.assertTemplateUsed(response, 'my_lists.html')
+
+  def test_passes_correct_owner_to_template(self):
+    User.objects.create(email='wrong@owner.com')
+    correct_user = User.objects.create(email='a@b.com')
+    response = self.client.get(reverse('my_lists', args=('a@b.com',)))
+    self.assertEqual(response.context['owner'], correct_user)
  
 
 class ListViewTest(TestCase):
@@ -169,10 +183,12 @@ class NewListTest(TestCase):
     response = self.post_emtpy_item()
     self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
 
+  def test_list_owner_is_saved_if_user_is_authenticated(self):
+    user = User.objects.create(email='a@b.com')
+    self.client.force_login(user)
+    self.client.post('/lists/new', data={'text': 'new item'})
+    new_list = List.objects.get()
+    self.assertEqual(new_list.owner, user)
 
-class MyListTest(TestCase):
 
-  def test_my_lists_url_renders_muy_lists_template(self):
-    response = self.client.get(reverse('my_lists', args=('a@b.com',)))
-    self.assertTemplateUsed(response, 'my_lists.html')
 
