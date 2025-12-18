@@ -46,8 +46,8 @@ class MyListTest(FunctionalTest):
       )
     )
 
-    # And she sees that her list si in there, 
-    # named according to irs first list item
+    # And she sees that her list is in there, 
+    # named according to its first list item
     self.wait_for(
       lambda: self.browser.find_element(By.LINK_TEXT, 'Reticulate splines')
     )

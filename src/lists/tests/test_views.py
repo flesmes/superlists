@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.test import TestCase
 from django.utils import html
 import lxml.html
@@ -167,4 +168,11 @@ class NewListTest(TestCase):
   def test_for_empty_item_shows_error_on_page(self):
     response = self.post_emtpy_item()
     self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
+
+
+class MyListTest(TestCase):
+
+  def test_my_lists_url_renders_muy_lists_template(self):
+    response = self.client.get(reverse('my_lists', args=('a@b.com',)))
+    self.assertTemplateUsed(response, 'my_lists.html')
 
