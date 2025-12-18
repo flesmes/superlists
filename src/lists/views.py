@@ -28,8 +28,9 @@ def new_list(request):
   form = ItemForm(data=request.POST)
   if form.is_valid():
     new_list = List.objects.create()
-    new_list.owner = request.user
-    new_list.save()
+    if request.user.is_authenticated:
+      new_list.owner = request.user
+      new_list.save()
     form.save(for_list=new_list)
     return redirect(new_list)
   else:
